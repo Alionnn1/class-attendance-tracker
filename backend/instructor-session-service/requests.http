@@ -1,0 +1,108 @@
+@baseUrl = http://localhost:3002
+@loginUrl = http://localhost:3001
+@internalKey = paste-INTERNAL_API_KEY-from-.env
+
+###
+GET {{baseUrl}}/health
+
+###
+# @name instructor
+POST {{loginUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "mona.hassan@example.edu",
+  "password": "Attend2026!"
+}
+
+###
+# @name admin
+POST {{loginUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.edu",
+  "password": "Attend2026!"
+}
+
+###
+GET {{baseUrl}}/instructors/me/courses
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+# @name opened
+POST {{baseUrl}}/sessions
+Authorization: Bearer {{instructor.response.body.token}}
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "durationMinutes": 10
+}
+
+###
+POST {{baseUrl}}/sessions
+Authorization: Bearer {{instructor.response.body.token}}
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "durationMinutes": 10
+}
+
+###
+POST {{baseUrl}}/sessions
+Authorization: Bearer {{instructor.response.body.token}}
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "durationMinutes": 0
+}
+
+###
+POST {{baseUrl}}/sessions
+Authorization: Bearer {{instructor.response.body.token}}
+Content-Type: text/plain
+
+courseId=1
+
+###
+GET {{baseUrl}}/sessions/{{opened.response.body.id}}
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+GET {{baseUrl}}/sessions/open?code={{opened.response.body.code}}
+X-Internal-Key: {{internalKey}}
+
+###
+GET {{baseUrl}}/sessions/open?code={{opened.response.body.code}}
+
+###
+PATCH {{baseUrl}}/sessions/{{opened.response.body.id}}/close
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+PATCH {{baseUrl}}/sessions/{{opened.response.body.id}}/close
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+GET {{baseUrl}}/courses/1/excuses?status=pending
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+PATCH {{baseUrl}}/excuses/1/review
+Authorization: Bearer {{instructor.response.body.token}}
+Content-Type: application/json
+
+{
+  "decision": "approve"
+}
+
+###
+GET {{baseUrl}}/instructors?search=hassan
+Authorization: Bearer {{admin.response.body.token}}
+
+###
+GET {{baseUrl}}/instructors
+Authorization: Bearer {{instructor.response.body.token}}
