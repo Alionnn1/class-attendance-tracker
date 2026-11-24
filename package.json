@@ -1,0 +1,21 @@
+{
+  "name": "class-attendance-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Team 23 - Class Attendance Tracker (Introduction to Cloud Computing, 25CSCI37H)",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix frontend && npm install --prefix backend/student-service && npm install --prefix backend/instructor-session-service && npm install --prefix backend/course-reports-service",
+    "dev": "node infrastructure/start-local.js",
+    "db:setup": "node database/setup.js",
+    "db:reset": "node database/setup.js --reset",
+    "deploy": "bash infrastructure/deploy.sh",
+    "check": "node infrastructure/check.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.1",
+    "dotenv": "^18.0.10"
+  }
+}
