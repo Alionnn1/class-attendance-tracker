@@ -1,0 +1,11 @@
+node_modules/
+.env
+.DS_Store
+Thumbs.db
+*.zip
+
+infrastructure/build/
+
+backend/student-service/shared/
+backend/instructor-session-service/shared/
+backend/course-reports-service/shared/
