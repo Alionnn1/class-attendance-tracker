@@ -1,0 +1,174 @@
+@baseUrl = http://localhost:3001
+@internalKey = paste-INTERNAL_API_KEY-from-.env
+
+###
+GET {{baseUrl}}/health
+
+###
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.edu",
+  "password": "Attend2026!"
+}
+
+###
+# @name student
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "omar.khaled@example.edu",
+  "password": "Attend2026!"
+}
+
+###
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.edu",
+  "password": "wrong-password"
+}
+
+###
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.edu"
+}
+
+###
+GET {{baseUrl}}/students/me/attendance-summary
+Authorization: Bearer {{student.response.body.token}}
+
+###
+GET {{baseUrl}}/students/me/attendance
+Authorization: Bearer {{student.response.body.token}}
+
+###
+GET {{baseUrl}}/students/me/excuses
+Authorization: Bearer {{student.response.body.token}}
+
+###
+POST {{baseUrl}}/attendance/check-in
+Authorization: Bearer {{student.response.body.token}}
+Content-Type: application/json
+
+{
+  "code": "K7Q2XM"
+}
+
+###
+POST {{baseUrl}}/attendance/check-in
+Authorization: Bearer {{student.response.body.token}}
+Content-Type: application/json
+
+{
+  "code": ""
+}
+
+###
+POST {{baseUrl}}/attendance/check-in
+Authorization: Bearer {{student.response.body.token}}
+Content-Type: text/plain
+
+code=K7Q2XM
+
+###
+POST {{baseUrl}}/excuses
+Authorization: Bearer {{student.response.body.token}}
+Content-Type: application/json
+
+{
+  "attendanceRecordId": 1,
+  "reason": "Doctor appointment, I can show the medical note."
+}
+
+###
+GET {{baseUrl}}/students/me/attendance-summary
+Authorization: Bearer {{login.response.body.token}}
+
+###
+GET {{baseUrl}}/students?search=omar
+Authorization: Bearer {{login.response.body.token}}
+
+###
+GET {{baseUrl}}/students?courseId=1
+Authorization: Bearer {{login.response.body.token}}
+
+###
+# @name created
+POST {{baseUrl}}/students
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "fullName": "Laila Mostafa",
+  "email": "laila.mostafa@example.edu",
+  "password": "FirstPass2026",
+  "courseIds": [1, 2]
+}
+
+###
+POST {{baseUrl}}/students
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "fullName": "Laila Mostafa",
+  "email": "laila.mostafa@example.edu",
+  "password": "FirstPass2026",
+  "courseIds": []
+}
+
+###
+PATCH {{baseUrl}}/students/{{created.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "fullName": "Laila M. Mostafa",
+  "courseIds": [1]
+}
+
+###
+DELETE {{baseUrl}}/students/{{created.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
+
+###
+POST {{baseUrl}}/attendance/absences
+X-Internal-Key: {{internalKey}}
+Content-Type: application/json
+
+{
+  "sessionId": 1,
+  "courseId": 1
+}
+
+###
+PATCH {{baseUrl}}/excuses/1/status
+X-Internal-Key: {{internalKey}}
+Content-Type: application/json
+
+{
+  "decision": "approved"
+}
+
+###
+GET {{baseUrl}}/courses/1/attendance-totals
+X-Internal-Key: {{internalKey}}
+
+###
+GET {{baseUrl}}/courses/1/attendance-totals
+
+###
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{login.response.body.token}}
+
+###
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{login.response.body.token}}
