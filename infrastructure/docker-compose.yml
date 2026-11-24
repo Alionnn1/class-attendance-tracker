@@ -1,0 +1,17 @@
+services:
+  floci:
+    image: floci/floci:latest-compat
+    container_name: floci
+    user: root
+    ports:
+      - "4566:4566"
+    environment:
+      FLOCI_HOSTNAME: floci
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ..:/project:ro
+      - ./build:/deploy
+
+networks:
+  default:
+    name: floci

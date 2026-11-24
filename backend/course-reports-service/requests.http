@@ -1,0 +1,121 @@
+@baseUrl = http://localhost:3003
+@loginUrl = http://localhost:3001
+
+###
+GET {{baseUrl}}/health
+
+###
+# @name admin
+POST {{loginUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.edu",
+  "password": "Attend2026!"
+}
+
+###
+# @name instructor
+POST {{loginUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "mona.hassan@example.edu",
+  "password": "Attend2026!"
+}
+
+###
+GET {{baseUrl}}/courses?search=cloud
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+GET {{baseUrl}}/courses/1
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+# @name created
+POST {{baseUrl}}/courses
+Authorization: Bearer {{admin.response.body.token}}
+Content-Type: application/json
+
+{
+  "code": "25CSCI99H",
+  "name": "Example Course",
+  "firstWarningAt": 2,
+  "secondWarningAt": 4,
+  "absenceLimit": 6
+}
+
+###
+POST {{baseUrl}}/courses
+Authorization: Bearer {{admin.response.body.token}}
+Content-Type: application/json
+
+{
+  "code": "25CSCI98H",
+  "name": "Bad Policy",
+  "firstWarningAt": 4,
+  "secondWarningAt": 4,
+  "absenceLimit": 6
+}
+
+###
+POST {{baseUrl}}/courses
+Authorization: Bearer {{admin.response.body.token}}
+Content-Type: text/plain
+
+code=25CSCI97H
+
+###
+POST {{baseUrl}}/courses
+Authorization: Bearer {{instructor.response.body.token}}
+Content-Type: application/json
+
+{
+  "code": "25CSCI96H",
+  "name": "Not Allowed",
+  "firstWarningAt": 2,
+  "secondWarningAt": 4,
+  "absenceLimit": 6
+}
+
+###
+PATCH {{baseUrl}}/courses/{{created.response.body.id}}
+Authorization: Bearer {{admin.response.body.token}}
+Content-Type: application/json
+
+{
+  "absenceLimit": 8
+}
+
+###
+DELETE {{baseUrl}}/courses/{{created.response.body.id}}
+Authorization: Bearer {{admin.response.body.token}}
+
+###
+GET {{baseUrl}}/courses/1/flags
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+POST {{baseUrl}}/courses/1/warnings
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+# @name report
+POST {{baseUrl}}/reports
+Authorization: Bearer {{instructor.response.body.token}}
+Content-Type: application/json
+
+{
+  "courseId": 1,
+  "scope": "course",
+  "format": "csv"
+}
+
+###
+GET {{baseUrl}}/reports?courseId=1
+Authorization: Bearer {{instructor.response.body.token}}
+
+###
+GET {{baseUrl}}/reports/{{report.response.body.id}}/download
+Authorization: Bearer {{instructor.response.body.token}}
