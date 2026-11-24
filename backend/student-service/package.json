@@ -1,0 +1,24 @@
+{
+  "name": "student-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Class Attendance Tracker - Student Service",
+  "main": "server.js",
+  "scripts": {
+    "sync-shared": "node ../sync-shared.js",
+    "predev": "npm run sync-shared",
+    "dev": "node --watch server.js",
+    "prestart": "npm run sync-shared",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.1",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "serverless-http": "^4.0.0"
+  }
+}
